@@ -1,6 +1,6 @@
 ## Face-tracking camera
 
-This is a face-tracking camera using OpenCV and an arduino. I will be testing my own custom model trained using a customized VGG16 architecture model and will be implementing both the pre-trained model within OpenCV (resnet SSD) and my own. The camera will be able to track the face and center it to the middle of the screen. 
+This is a face-tracking camera using OpenCV and an arduino. I will be testing my own custom model trained using a customized VGG16 architecture model and will be implementing both the pre-trained model within OpenCV (resnet SSD). The camera will be able to track the face and center it to the middle of the screen. 
 
 ## Getting Started
 
