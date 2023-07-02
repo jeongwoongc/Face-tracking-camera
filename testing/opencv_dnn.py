@@ -45,6 +45,5 @@ while True:
         break
 
 # Release the resources
-if input_type == "video":
-    cap.release()
+
 cv2.destroyAllWindows()

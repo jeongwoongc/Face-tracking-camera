@@ -29,8 +29,4 @@ while True:
     # Break the loop if 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-# Release the resources
-if input_type == "video":
-    cap.release()
 cv2.destroyAllWindows()

@@ -7,7 +7,7 @@ import tensorflow as tf
 from keras.models import load_model
 
 # load face tracking model
-facetracker = load_model('facetracker.h5')
+facetracker = load_model('./models/facetracker.h5')
 
 # arduino communication
 arduino = serial.Serial(port='COM5', baudrate=9600)
@@ -25,7 +25,7 @@ def coord_send(center):
 
     return 
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 while cap.isOpened():
     _ , frame = cap.read()
     frame = frame[50:500, 50:500,:]
