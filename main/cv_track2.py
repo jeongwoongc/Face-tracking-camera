@@ -32,11 +32,18 @@ while True:
             box = detections[0, 0, i, 3:7] * np.array([frame.shape[1], frame.shape[0], frame.shape[1], frame.shape[0]])
             startX, startY, endX, endY = box.astype(int)
 
+            # Calculate the center coordinates
+            centerX = int((startX + endX) / 2)
+            centerY = int((startY + endY) / 2)
+
             # Draw the bounding box and confidence on the frame
             cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
-            cv2.circle(frame, (int((startX + endX) / 2), int((startY + endY) / 2)), 2, (0, 255, 0), 2)
+            cv2.circle(frame, (centerX, centerY), 2, (0, 255, 0), 2)
             text = f"Confidence: {confidence:.2f}"
             cv2.putText(frame, text, (startX, startY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+            # Print the center coordinates
+            print(f"Center Coordinates: [{centerX} {centerY}]")
 
     # Display the output frame
     cv2.imshow("Face Detection", frame)
@@ -46,5 +53,4 @@ while True:
         break
 
 # Release the resources
-
 cv2.destroyAllWindows()
