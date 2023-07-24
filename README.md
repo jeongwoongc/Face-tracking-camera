@@ -12,14 +12,6 @@ This is a face-tracking camera using OpenCV and an arduino. I will be testing my
 - PySerial 3.4
 - Arduino IDE
 
-### Installing
-
-- Install Python 3.6
-- Install OpenCV 3.4.2
-- Install Numpy 1.15.4
-- Install PySerial 3.4
-- Install Arduino IDE
-
 ## Running the tests
 
 - Run the Arduino code on the Arduino IDE
