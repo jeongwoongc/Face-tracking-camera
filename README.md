@@ -49,10 +49,12 @@ This is a face-tracking camera using OpenCV and an arduino. I will be testing my
 - Servo Motor x2
 - Webcam
 - Custom 3D printed gimbal (will be uploaded soon)
+
 <div style="text-align: center;"> 
   <img src="./pictures/Hardware1.jpg" alt="Image" width="300">
   <img src="./pictures/Hardware.jpg" alt="Image" width="300">
 </div>
+
 ## ResNet SSD VS Custom Model
 
 - ResNet SSD is a pre-trained model that is already trained on the COCO dataset. It is a very accurate model and is able to detect faces very well. However, it is not able to detect faces that are too far away from the camera. This is because the model is trained on the COCO dataset which does not have faces that are too far away from the camera.
