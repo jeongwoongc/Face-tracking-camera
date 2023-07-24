@@ -1,56 +1,74 @@
 import cv2
+import math
 import numpy as np
+import serial
+import time 
+import tensorflow as tf
+from keras.models import load_model
 
-# Load the pre-trained model from OpenCV
-model_path = "./models/res10_300x300_ssd_iter_140000_fp16.caffemodel"
-config_path = "./models/deploy.prototxt"
-net = cv2.dnn.readNetFromCaffe(config_path, model_path)
+# load face tracking model
+facetracker = load_model('./models/facetracker.h5')
 
-input_path = 0
-cap = cv2.VideoCapture(input_path)
+# arduino communication
+arduino = serial.Serial(port='COM5', baudrate=250000)
+time.sleep(3)
 
-# Iterate over frames in the input stream
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
+cap = cv2.VideoCapture(0)
+while cap.isOpened():
+    _ , frame = cap.read()
+    frame = frame[50:500, 50:500,:]
+    
+    frame = cv2.flip(frame, 1)
 
-    # Preprocess the frame
-    blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300), (104.0, 177.0, 123.0))
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    resized = tf.image.resize(rgb, (120,120))
 
-    # Set the input to the network and perform forward pass
-    net.setInput(blob)
-    detections = net.forward()
+    yhat = facetracker.predict(np.expand_dims(resized/255,0))
+    sample_coords = yhat[1][0]
 
-    # Iterate over the detections
-    for i in range(detections.shape[2]):
-        confidence = detections[0, 0, i, 2]
+    if yhat[0] > 0.5: 
+        # Controls the main rectangle
+        cv2.rectangle(frame, 
+                      tuple(np.multiply(sample_coords[:2], [450,450]).astype(int)),
+                      tuple(np.multiply(sample_coords[2:], [450,450]).astype(int)), 
+                            (0,255,0), 2)
 
-        # Filter out weak detections
-        if confidence > 0.5:
-            # Get the coordinates of the bounding box
-            box = detections[0, 0, i, 3:7] * np.array([frame.shape[1], frame.shape[0], frame.shape[1], frame.shape[0]])
-            startX, startY, endX, endY = box.astype(int)
+        # Configure center dot
+        start_dot = np.multiply(sample_coords[:2], [450,450]).astype(int)
+        end_dot = np.multiply(sample_coords[2:], [450,450]).astype(int)
 
-            # Calculate the center coordinates
-            centerX = int((startX + endX) / 2)
-            centerY = int((startY + endY) / 2)
+        center_factor = np.divide(end_dot-start_dot, [2,2]).astype(int)
+        center_coord = np.add(center_factor, start_dot).astype(int)
 
-            # Draw the bounding box and confidence on the frame
-            cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
-            cv2.circle(frame, (centerX, centerY), 2, (0, 255, 0), 2)
-            text = f"Confidence: {confidence:.2f}"
-            cv2.putText(frame, text, (startX, startY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+        cv2.circle(frame, center_coord, 5, (255, 0, 255), cv2.FILLED) 
 
-            # Print the center coordinates
-            print(f"Center Coordinates: [{centerX} {centerY}]")
+        # set error coordinates
+        err_x = 20*(center_coord[0] - frame.shape[1] / 2) / (frame.shape[1] / 2)
+        err_y = 20*(center_coord[1] - frame.shape[0] / 2) / (frame.shape[0] / 2)
+    
 
-    # Display the output frame
-    cv2.imshow("Face Detection", frame)
+        # Controls the label rectangle
+        cv2.rectangle(frame, 
+                      tuple(np.add(np.multiply(sample_coords[:2], [450,450]).astype(int), 
+                                    [0,-30])),
+                      tuple(np.add(np.multiply(sample_coords[:2], [450,450]).astype(int),
+                                    [100,0])), 
+                            (0,255,0), -1)
+        
 
-    # Break the loop if 'q' is pressed
+        # Controls the text rendered
+        cv2.putText(frame, 'Daniel', tuple(np.add(np.multiply(sample_coords[:2], [450,450]).astype(int),
+                                               [0,-5])),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 2, cv2.LINE_AA)    
+        
+        arduino.write(f"{err_x:.3f}x!".encode())
+        arduino.write(f"{err_y:.3f}y!".encode())
+        
+        print (f"X: {err_x:.3f}, Y: {err_y:.3f}")
+
+    cv2.imshow('FaceTrack', frame)
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-# Release the resources
+cap.release()
 cv2.destroyAllWindows()
