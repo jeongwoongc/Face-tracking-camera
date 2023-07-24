@@ -39,7 +39,7 @@ This is a face-tracking camera using OpenCV and an arduino. I will be testing my
 
 **Zoom use case:**
 
-<div style="text-align: center;"> 
+<div style="display: flex; justify-content: center;">
   <img src="./pictures/zoom.gif" alt="Animated GIF" width="500">
 </div>
 
@@ -50,7 +50,7 @@ This is a face-tracking camera using OpenCV and an arduino. I will be testing my
 - Webcam
 - Custom 3D printed gimbal (will be uploaded soon)
 
-<div style="text-align: center;"> 
+<div style="display: flex; justify-content: center;">
   <img src="./pictures/Hardware1.jpg" alt="Image" width="300">
   <img src="./pictures/Hardware.jpg" alt="Image" width="300">
 </div>
@@ -58,13 +58,13 @@ This is a face-tracking camera using OpenCV and an arduino. I will be testing my
 ## ResNet SSD VS Custom Model
 
 - ResNet SSD is a pre-trained model that is already trained on the COCO dataset. It is a very accurate model and is able to detect faces very well. However, it is not able to detect faces that are too far away from the camera. This is because the model is trained on the COCO dataset which does not have faces that are too far away from the camera.
-<div style="text-align: center;"> 
+<div style="display: flex; justify-content: center;">
   <img src="./pictures/resnet.gif" alt="Animated GIF" width="300">
 </div>
 
 - The custom model is trained on a custom dataset that I created. It is only able to detect my face (which was intended to be used for security purposes). Therefore, it is not as accurate as the ResNet SSD model. This is because the dataset is curated using a python script that takes pictures of my face from a webcam. The dataset also contains pictures of my face from different angles and different lighting conditions. The model is trained using a customized VGG16 architecture model. 
 
-<div style="text-align: center;"> 
+<div style="display: flex; justify-content: center;">
   <img src="./pictures/custom.gif" alt="Animated GIF" width="300">
 </div>
 
