@@ -12,11 +12,6 @@ This is a face-tracking camera using OpenCV and an arduino. I will be testing my
 - PySerial 3.4
 - Arduino IDE
 
-## Running the tests
-
-- Run the Arduino code on the Arduino IDE
-- Run the Python code on the terminal
-
 ## Built With
 
 - TensorFlow
