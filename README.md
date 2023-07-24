@@ -38,10 +38,11 @@ This is a face-tracking camera using OpenCV and an arduino. I will be testing my
 - This is meant for stationary desktops with a webcam. The camera will be able to track the face and center it to the middle of the screen.
 
 **Zoom use case:**
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <div style="display: flex; justify-content: center;">
   <img src="./pictures/zoom.gif" alt="Animated GIF" width="500">
 </div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## Hardware Setup
 
